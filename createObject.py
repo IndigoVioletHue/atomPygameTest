@@ -14,7 +14,9 @@ class newStatic:
         self.x = 0;
         self.y = 0;
         self.lorr = 0; #lorr == set X Vel
+        self.uord = 0;
         self.kupx = False;
+        self.kupy = False;
 
     def setParams(self, height, width, x, y):
         self.height = height;
@@ -28,6 +30,12 @@ class newStatic:
     def KDPX(self):
         self.kupx = False;
 
+    def KUPY(self):
+        self.kupy = True;
+
+    def KDPY(self):
+        self.kupy = False
+
     def setColor(self, color):
         self.color = color;
 
@@ -38,9 +46,12 @@ class newStatic:
     def setX(self, x):
         self.lorr = x;
 
+    def setY(self, y):
+        self.uord = y;
+
     def tick(self, screen):
-        self.rect = self.rect.move(self.lorr,0)
-        if self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2):
+        self.rect = self.rect.move(self.lorr,self.uord)
+        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720):
             return
         pygame.draw.rect(screen, self.color, self.rect)
         pygame.display.update(self.rect)
@@ -60,7 +71,7 @@ class newMoveable:
         self.rkupx = False;
         self.Jump = False;
         self.crouching = False;
-        self.groundY = 600;
+        self.groundY = 820;
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
@@ -115,17 +126,20 @@ class newMoveable:
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
         pygame.display.update(self.rect)#updating the display
         groundY = self.groundY
-        for j in range(len(staticObjects)):
+        for j in range(len(staticObjects)): #lsiting all of the static objects
             xvalues = []
-            for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width):
+            for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width): #finding all of their x values
                 xvalues.append(x)
+            yvalues = []
+            for y in range(staticObjects[j].rect.y,staticObjects[j].rect.y +staticObjects[j].height): #finding all of their x values
+                yvalues.append(y)
             for i in range(roundup(self.rect.y), 720, 10):
-                if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y
+                if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y pos
                         groundY = staticObjects[j].rect.y
 
         if roundup(self.rect.y) < groundY - self.height:
             self.velY +=1
-        elif self.rect.y < 600:
+        elif self.velY > 0:
             self.velY = 0
             self.rect.y = groundY - self.height
             self.Jump = False;
