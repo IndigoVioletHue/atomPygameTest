@@ -51,7 +51,8 @@ class newMoveable:
         self.velX = 0;
         self.velY = 0;
         self.kupy = False;
-        self.kupx = False;
+        self.lkupx = False;
+        self.rkupx = False;
         self.Jump = False;
         self.crouching = False;
 
@@ -60,10 +61,16 @@ class newMoveable:
 
     def KUPY(self):
         self.kupy = True
-    def KUPX(self):
-        self.kupx = True
-    def KDPX(self):
-        self.kupx = False;
+
+    def LKUPX(self):
+        self.lkupx = True
+    def LKDPX(self):
+        self.lkupx = False;
+
+    def RKUPX(self):
+        self.rkupx = True
+    def RKDPX(self):
+        self.rkupx = False;
     def KDPY(self):
         self.kupy = False;
 
@@ -109,7 +116,7 @@ class newMoveable:
             else:
                 self.velY +=1
 
-        if self.kupx == True: #kupx = Key Up X
+        if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
             self.velX *= 0.9
 
         if self.rect.x >= 1180 - 50: #left wall side collision detection
