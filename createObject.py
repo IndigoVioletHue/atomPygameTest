@@ -4,13 +4,14 @@
 #of a pretty messy program. Oh well, its a seperate module.
 import pygame
 
+
 class newStatic:
     def __init__(self): #initiatialising
         self.height = 0;
         self.width = 0;
         self.x = 0;
         self.y = 0;
-        self.lorr = 0;
+        self.lorr = 0; #lorr == set X Vel
         self.kupx = False;
 
     def setParams(self, height, width, x, y):
@@ -35,9 +36,9 @@ class newStatic:
     def setX(self, x):
         self.lorr = x;
 
-    def tick(self):
+    def tick(self, screen):
         self.rect = self.rect.move(self.lorr,0)
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        pygame.draw.rect(screen, self.color, self.rect)
         pygame.display.update(self.rect)
         if self.kupx == True:
             self.lorr *= 0.85
@@ -63,7 +64,8 @@ class newMoveable:
         self.kupy = True
 
     def LKUPX(self):
-        self.lkupx = True
+        self.lkupx = True;
+
     def LKDPX(self):
         self.lkupx = False;
 
@@ -107,11 +109,11 @@ class newMoveable:
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
         pygame.display.update(self.rect)#updating the display
-
+        groundY = 600;
         if self.Jump == True: #code for jumping, basically keeps moving it up by less and less uuntil it decreases and reaches 600(floor)
-            if self.rect.y >= 600:
+            if self.rect.y >= groundY - 25:
                 self.velY = 0
-                self.rect.y = 600
+                self.rect.y = groundY - 25
                 self.Jump = False;
             else:
                 self.velY +=1

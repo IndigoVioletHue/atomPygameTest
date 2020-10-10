@@ -11,18 +11,16 @@ clock = pygame.time.Clock()
 FPS = 60 #60FPS 4K Realtime RayTracing B)))))))))))))))
 
 player = createObject.newMoveable() #player object creation
-player.setParams(50, 50, 615, 600)
+player.setParams(75, 50, 615, 575)
 player.setColor(BLACK)
 player.drawChar(screen)
 
 land = createObject.newStatic() #land object in the middle, might ditch this idea.
 land.setParams(120, 1280, 0, 650 )
 land.setColor((124,124,124))
-
 land2 = createObject.newStatic() #right land
 land2.setParams(120, 1280, 1280, 650)
 land2.setColor((200,124,200))
-
 land3 = createObject.newStatic() #left land
 land3.setParams(120, 1280, -1280, 650)
 land3.setColor((124,200,124))
@@ -36,7 +34,6 @@ staticObjects = [land, land2, land3] #another reason to do the land differently,
 pygame.init() #intialising pygame
 pygame.display.init()
 pygame.display.update()
-
 #Loop
 running = True
 while running: #main gameloop. Kinda stolen?
@@ -55,7 +52,7 @@ while running: #main gameloop. Kinda stolen?
                     player.setVelX(-5)
                     player.LKDPX()
             elif event.key == pygame.K_d:
-                if player.rect.x >= 1180-50 and player.rkupx == False: #if the x value is smaller than 100 and the key ISNT up.: #if the players coords are bigger than 1080, then move land instead of player.
+                if player.rect.x >= 1180-50 and player.rkupx == False: #if the x value is smaller than 1180-50 and the key ISNT up.: #if the players coords are bigger than 1080, then move land instead of player.
                     for i in range(len(staticObjects)):
                         staticObjects[i].setX(-5)
                         staticObjects[i].KDPX()
@@ -80,12 +77,11 @@ while running: #main gameloop. Kinda stolen?
             running = False
             pygame.quit()
 
-
     screen.fill(WHITE)
     clock.tick(FPS)
     player.tick()
     for i in range(len(staticObjects)):
-        staticObjects[i].tick()
+        staticObjects[i].tick(screen)
         if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is a certain number, move the land.
             staticObjects[i].setX(-5)
             staticObjects[i].KDPX()
