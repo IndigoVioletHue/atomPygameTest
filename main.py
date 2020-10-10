@@ -1,6 +1,11 @@
 #Main file, so just drawing the stages and intialising all the objects that'll be used.
 #I can see a lot of rewriting potential in this code. Swag B)
-import pygame, createObject
+
+###PLEASE ONLY PLACE OBJECTS WITH Y VALUES INCREMENTING IN TENS
+import pygame, createObject, math
+
+def roundup(x): #used in the jump detection
+    return int(math.ceil(x / 10.0)) * 10
 
 BLACK = (0,0,0)
 WHITE = (255,255,255) #defining it because currently, during the only build, these are most of the colours to be used.
@@ -83,7 +88,14 @@ while running: #main gameloop. Kinda stolen?
 
     screen.fill(WHITE)
     clock.tick(FPS)
-    player.tick()
+    for j in range(len(staticObjects)):
+        xvalues = []
+        for x in range(staticObjects[j].rect.x,staticObjects[j].width):
+            xvalues.append(x)
+        for i in range(roundup(player.rect.y), 720, 10):
+            if player.rect.x + player.width//2 in xvalues and i == staticObjects[j].rect.y:
+                    groundY = staticObjects[j].rect.y
+
     for i in range(len(staticObjects)):
         staticObjects[i].tick(screen)
         if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is a certain number, move the land.
@@ -92,4 +104,6 @@ while running: #main gameloop. Kinda stolen?
         elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
+    player.tick(groundY)
+
     pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya

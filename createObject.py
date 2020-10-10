@@ -2,8 +2,10 @@
 #Static, moveable, interactable, and mountable(?)
 #I could probably cram these all into one object, but it helps debugging, at the expense
 #of a pretty messy program. Oh well, its a seperate module.
-import pygame
+import pygame, math
 
+def roundup(x):
+    return int(math.ceil(x / 10.0)) * 10
 
 class newStatic:
     def __init__(self): #initiatialising
@@ -58,6 +60,7 @@ class newMoveable:
         self.rkupx = False;
         self.Jump = False;
         self.crouching = False;
+        self.groundY = 600;
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
@@ -107,11 +110,11 @@ class newMoveable:
         else:
             return
 
-    def tick(self):
+    def tick(self, groundY):
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
         pygame.display.update(self.rect)#updating the display
-        groundY = 600;
+        groundY = self.groundY
         if self.Jump == True: #code for jumping, basically keeps moving it up by less and less uuntil it decreases and reaches 600(floor)
             if self.rect.y >= groundY - 25:
                 self.velY = 0
