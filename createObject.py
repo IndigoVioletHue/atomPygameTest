@@ -1,7 +1,11 @@
+#object creation file. Planned to be consisting of four types.
+#Static, moveable, interactable, and mountable(?)
+#I could probably cram these all into one object, but it helps debugging, at the expense
+#of a pretty messy program. Oh well, its a seperate module.
 import pygame
 
 class newStatic:
-    def __init__(self):
+    def __init__(self): #initiatialising
         self.height = 0;
         self.width = 0;
         self.x = 0;
@@ -24,7 +28,7 @@ class newStatic:
     def setColor(self, color):
         self.color = color;
 
-    def drawChar(self, screen):
+    def drawChar(self, screen):#drawing the inital character
         self.screen = screen;
         self.rect = pygame.draw.rect(screen, self.color, (self.x,self.y,self.width,self.height))
 
@@ -39,7 +43,7 @@ class newStatic:
             self.lorr *= 0.9
 
 class newMoveable:
-    def __init__(self):
+    def __init__(self): #initialising all the variables.
         self.height = 0;
         self.width = 0;
         self.x = 0;
@@ -52,31 +56,28 @@ class newMoveable:
         self.crouching = False;
 
     def printCoords(self):
-        return self.rect.x, self.rect.y
+        return self.rect.x, self.rect.y #printing the x and y.
 
     def KUPY(self):
         self.kupy = True
-
     def KUPX(self):
         self.kupx = True
-
     def KDPX(self):
         self.kupx = False;
-
     def KDPY(self):
         self.kupy = False;
 
-    def setParams(self, height, width, x, y):
+    def setParams(self, height, width, x, y): #setting the parameters for drawing
         self.height = height;
         self.width = width;
         self.x = x;
         self.y = y;
 
     def drawChar(self, screen):
-        self.screen = screen;
+        self.screen = screen;#initial character drawing.
         self.rect = pygame.draw.rect(self.screen, self.color, (self.x,self.y,self.width,self.height)) #(x,y,width,height)
 
-    def setColor(self, color):
+    def setColor(self, color):#self explanantory really \/
         self.color = color;
 
     def setVelX(self, velX):
@@ -88,11 +89,7 @@ class newMoveable:
     def setY(self, y):
         self.rect.y = y
 
-
-    def crouch(self):
-        self.crouching = True;
-
-    def inJump(self):
+    def inJump(self): #end of self explanatory lmao /\
         if self.Jump != True:
             self.Jump = True;
             self.velY = -20
@@ -100,10 +97,11 @@ class newMoveable:
             return
 
     def tick(self):
-        self.rect = self.rect.move(self.velX,self.velY)
-        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)
-        pygame.display.update(self.rect)
-        if self.Jump == True:
+        self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
+        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
+        pygame.display.update(self.rect)#updating the display
+
+        if self.Jump == True: #code for jumping, basically keeps moving it up by less and less uuntil it decreases and reaches 600(floor)
             if self.rect.y >= 600:
                 self.velY = 0
                 self.rect.y = 600
@@ -111,10 +109,10 @@ class newMoveable:
             else:
                 self.velY +=1
 
-        if self.kupx == True:
+        if self.kupx == True: #kupx = Key Up X
             self.velX *= 0.9
 
-        if self.rect.x >= 1080:
+        if self.rect.x >= 1080: #left wall side collision detection
             self.rect.x = 1080
-        if self.rect.x <= 100:
+        if self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100
