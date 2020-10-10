@@ -112,7 +112,7 @@ class newMoveable:
         if self.kupx == True: #kupx = Key Up X
             self.velX *= 0.9
 
-        if self.rect.x >= 1080: #left wall side collision detection
-            self.rect.x = 1080
+        if self.rect.x >= 1180 - 50: #left wall side collision detection
+            self.rect.x = 1180 - 50 #the -50 accounts for the players width
         if self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100

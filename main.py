@@ -55,7 +55,7 @@ while running: #main gameloop. Kinda stolen?
                     player.setVelX(-5)
                     player.KDPX()
             elif event.key == pygame.K_d:
-                if player.rect.x >= 1080 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.: #if the players coords are bigger than 1080, then move land instead of player.
+                if player.rect.x >= 1180-50 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.: #if the players coords are bigger than 1080, then move land instead of player.
                     for i in range(len(staticObjects)):
                         staticObjects[i].setX(-5)
                         staticObjects[i].KDPX()
@@ -84,7 +84,7 @@ while running: #main gameloop. Kinda stolen?
     player.tick()
     for i in range(len(staticObjects)):
         staticObjects[i].tick()
-        if player.rect.x >= 1080 and player.kupx == False: #if the player x is a certain number, move the land.
+        if player.rect.x >= 1180-50 and player.kupx == False: #if the player x is a certain number, move the land.
             staticObjects[i].setX(-5)
             staticObjects[i].KDPX()
         elif player.rect.x <= 100 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.
