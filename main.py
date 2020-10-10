@@ -24,12 +24,16 @@ land2.setColor((200,124,200))
 land3 = createObject.newStatic() #left land
 land3.setParams(120, 1280, -1280, 650)
 land3.setColor((124,200,124))
+platform = createObject.newStatic() #platform
+platform.setParams(50, 300, 50, 480)
+platform.setColor((124,124,124))
 
 land.drawChar(screen) #drawing all of the land characters, as originally it was done every gametick,
 land2.drawChar(screen)#before the newStatic class had a tick function
 land3.drawChar(screen)
+platform.drawChar(screen)
 
-staticObjects = [land, land2, land3] #another reason to do the land differently, i'd have to have a long as heck list.
+staticObjects = [land, land2, land3, platform] #another reason to do the land differently, i'd have to have a long as heck list.
 
 pygame.init() #intialising pygame
 pygame.display.init()
