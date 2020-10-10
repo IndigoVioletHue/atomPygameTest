@@ -46,13 +46,20 @@ while running: #main gameloop. Kinda stolen?
             if event.key == pygame.K_w:
                 player.inJump()
             elif event.key == pygame.K_a:
-                if player.rect.x <= 200:
+                if player.rect.x <= 100: #left side of page
+                    for i in range(len(staticObjects)):
+                        if player.rect.x <= 100 and player.kupx == False: #if the player x is a certain number, move the land.
+                            staticObjects[i].setX(5)
+                            staticObjects[i].KDPX()
                     continue
                 else:
                     player.setVelX(-5)
                     player.KDPX()
             elif event.key == pygame.K_d:
                 if player.rect.x >= 1080:
+                    if player.rect.x >= 1080 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.
+                        staticObjects[i].setX(-5)
+                        staticObjects[i].KDPX()
                     continue
                 else:
                     player.setVelX(5)
@@ -81,7 +88,7 @@ while running: #main gameloop. Kinda stolen?
         if player.rect.x >= 1080 and player.kupx == False: #if the player x is a certain number, move the land.
             staticObjects[i].setX(-5)
             staticObjects[i].KDPX()
-        elif player.rect.x <= 100 and player.kupx == False: #if the x value is smaller than 200 and the key ISNT up.
+        elif player.rect.x <= 100 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
     pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
