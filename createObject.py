@@ -114,7 +114,7 @@ class newMoveable:
         if self.kupx == True:
             self.velX *= 0.9
 
-        if self.rect.x >= 1280 - self.width:
-            self.rect.x = 1280 - self.width
-        if self.rect.x <= 0:
-            self.rect.x = 0
+        if self.rect.x >= 1080:
+            self.rect.x = 1080
+        if self.rect.x <= 100:
+            self.rect.x = 100
