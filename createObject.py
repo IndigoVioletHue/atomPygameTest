@@ -38,7 +38,7 @@ class newStatic:
 
     def tick(self, screen):
         self.rect = self.rect.move(self.lorr,0)
-        if self.rect.x >= 1280 or self.rect.x <= -1280:
+        if self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2):
             return
         pygame.draw.rect(screen, self.color, self.rect)
         pygame.display.update(self.rect)
