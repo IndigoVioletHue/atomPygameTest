@@ -40,7 +40,7 @@ class newStatic:
         pygame.draw.rect(self.screen, self.color, self.rect)
         pygame.display.update(self.rect)
         if self.kupx == True:
-            self.lorr *= 0.9
+            self.lorr *= 0.85
 
 class newMoveable:
     def __init__(self): #initialising all the variables.
@@ -117,7 +117,7 @@ class newMoveable:
                 self.velY +=1
 
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
-            self.velX *= 0.9
+            self.velX *= 0.85
 
         if self.rect.x >= 1180 - 50: #left wall side collision detection
             self.rect.x = 1180 - 50 #the -50 accounts for the players width

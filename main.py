@@ -5,7 +5,7 @@ import pygame, createObject
 BLACK = (0,0,0)
 WHITE = (255,255,255) #defining it because currently, during the only build, these are most of the colours to be used.
 screen = pygame.display.set_mode((1280, 720)) #Setting Screen
-pygame.display.set_caption('Drawing') #Window Name
+pygame.display.set_caption('Game') #Window Name
 screen.fill(WHITE)#Fills white to screen
 clock = pygame.time.Clock()
 FPS = 60 #60FPS 4K Realtime RayTracing B)))))))))))))))
@@ -62,7 +62,7 @@ while running: #main gameloop. Kinda stolen?
                     continue
                 else:
                     player.setVelX(5)
-                    player.RKDPX()
+                    player.RKDPX() #have to do the right and left versions, as otherwise the variable gets confused.
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
                 player.KUPY()
