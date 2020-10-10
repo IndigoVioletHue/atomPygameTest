@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 FPS = 60 #60FPS 4K Realtime RayTracing B)))))))))))))))
 
 player = createObject.newMoveable() #player object creation
-player.setParams(75, 50, 615, 575)
+player.setParams(75, 50, 615, 450)
 player.setColor(BLACK)
 player.drawChar(screen)
 
@@ -88,13 +88,6 @@ while running: #main gameloop. Kinda stolen?
 
     screen.fill(WHITE)
     clock.tick(FPS)
-    for j in range(len(staticObjects)):
-        xvalues = []
-        for x in range(staticObjects[j].rect.x,staticObjects[j].width):
-            xvalues.append(x)
-        for i in range(roundup(player.rect.y), 720, 10):
-            if player.rect.x + player.width//2 in xvalues and i == staticObjects[j].rect.y:
-                    groundY = staticObjects[j].rect.y
 
     for i in range(len(staticObjects)):
         staticObjects[i].tick(screen)
@@ -104,6 +97,6 @@ while running: #main gameloop. Kinda stolen?
         elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
-    player.tick(groundY)
+    player.tick(staticObjects)
 
     pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya

@@ -110,18 +110,25 @@ class newMoveable:
         else:
             return
 
-    def tick(self, groundY):
+    def tick(self, staticObjects):
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
         pygame.display.update(self.rect)#updating the display
         groundY = self.groundY
-        if self.Jump == True: #code for jumping, basically keeps moving it up by less and less uuntil it decreases and reaches 600(floor)
-            if self.rect.y >= groundY - 25:
-                self.velY = 0
-                self.rect.y = groundY - 25
-                self.Jump = False;
-            else:
-                self.velY +=1
+        for j in range(len(staticObjects)):
+            xvalues = []
+            for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width):
+                xvalues.append(x)
+            for i in range(roundup(self.rect.y), 720, 10):
+                if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y
+                        groundY = staticObjects[j].rect.y
+
+        if roundup(self.rect.y) < groundY - self.height:
+            self.velY +=1
+        elif self.rect.y < 600:
+            self.velY = 0
+            self.rect.y = groundY - self.height
+            self.Jump = False;
 
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
             self.velX *= 0.85
