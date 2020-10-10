@@ -46,18 +46,17 @@ while running: #main gameloop. Kinda stolen?
             if event.key == pygame.K_w:
                 player.inJump()
             elif event.key == pygame.K_a:
-                if player.rect.x <= 100: #left side of page
+                if player.rect.x <= 100 and player.kupx == False: #left side of page
                     for i in range(len(staticObjects)):
-                        if player.rect.x <= 100 and player.kupx == False: #if the player x is a certain number, move the land.
-                            staticObjects[i].setX(5)
-                            staticObjects[i].KDPX()
+                        staticObjects[i].setX(5)
+                        staticObjects[i].KDPX()
                     continue
                 else:
                     player.setVelX(-5)
                     player.KDPX()
             elif event.key == pygame.K_d:
-                if player.rect.x >= 1080:
-                    if player.rect.x >= 1080 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.
+                if player.rect.x >= 1080 and player.kupx == False: #if the x value is smaller than 100 and the key ISNT up.: #if the players coords are bigger than 1080, then move land instead of player.
+                    for i in range(len(staticObjects)):
                         staticObjects[i].setX(-5)
                         staticObjects[i].KDPX()
                     continue
