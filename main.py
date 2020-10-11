@@ -23,17 +23,20 @@ player.drawChar(screen)
 land = createObject.newStatic() #land object in the middle, might ditch this idea.
 land.setParams(120, 1280, 0, 650)
 land.setColor((124,124,124))
+land.isGround()
 
 land2 = createObject.newStatic() #right land
 land2.setParams(120, 1280, 1280, 650)
 land2.setColor((200,124,200))
+land2.isGround()
 
 leftLand = createObject.newStatic() #left land
 leftLand.setParams(120, 1280, -1280, 650)
 leftLand.setColor((124,200,124))
+leftLand.isGround()
 
 platform = createObject.newStatic() #platform
-platform.setParams(50, 300, 50, 480)
+platform.setParams(50, 300, 50, 580)
 platform.setColor((124,124,124))
 
 platform2 = createObject.newStatic() #another platform2

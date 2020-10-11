@@ -17,12 +17,16 @@ class newStatic:
         self.uord = 0;
         self.kupx = False;
         self.kupy = False;
+        self.isground = False;
 
     def setParams(self, height, width, x, y):
         self.height = height;
         self.width = width;
         self.x = x;
         self.y = y;
+
+    def isGround(self):
+        self.isground = True;
 
     def KUPX(self):
         self.kupx = True
@@ -73,7 +77,7 @@ class newMoveable:
         self.rkupx = False;
         self.Jump = False;
         self.crouching = False;
-        self.groundY = 9999;
+        self.groundY = 825; #just a value that is bigger than any screen size possible
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
@@ -123,11 +127,8 @@ class newMoveable:
         else:
             return
 
-    def tick(self, staticObjects):
-        self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
-        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
-        pygame.display.update(self.rect)#updating the display
-        groundY = self.groundY
+    def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
+        groundY = self.groundY #code for finding what is below it here.
         for j in range(len(staticObjects)): #lsiting all of the static objects
             xvalues = []
             for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width): #finding all of their x values
@@ -135,14 +136,19 @@ class newMoveable:
             yvalues = []
             for y in range(staticObjects[j].rect.y,staticObjects[j].rect.y +staticObjects[j].height): #finding all of their x values
                 yvalues.append(y)
-            for i in range(roundup(self.rect.y), 720, 10):
+            for i in range(roundup(self.rect.y), 900, 10):
                 if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y pos
                         groundY = staticObjects[j].rect.y
+            if staticObjects[j].rect.x == self.rect.x + self.width and self.rect.y in yvalues or staticObjects[j].rect.x + staticObjects[j].width == self.rect.x and self.rect.y in yvalues: #only the left side of the player can touch the right side of the rects, and vice versa.
+                self.velX = 0
+            if staticObjects[j].isground == True and groundY <= staticObjects[j].rect.y: #this should ensure the ground's y is equal to the grounds Y value if it cannot find one
+                groundY = staticObjects[j].rect.y
+        print(groundY, self.rect.y)
 
-        if roundup(self.rect.y) < groundY - self.height:
+        if roundup(self.rect.y) < groundY - self.height: #if the players y value is below (-is up, +is down) the grounds y value:
             self.velY +=1
-        elif self.velY > 0:
-            self.velY = 0
+        elif self.velY+staticObjects[0].uord > staticObjects[0].uord: #if the velocity of the player + the land > than the lands speed,
+            self.velY = staticObjects[0].uord #setting the velocity of the player when its still to the speed the platforms are moving
             self.rect.y = groundY - self.height
             self.Jump = False;
 
@@ -153,3 +159,7 @@ class newMoveable:
             self.rect.x = 1180 - 50 #the -50 accounts for the players width
         if self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100
+
+        self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
+        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
+        pygame.display.update(self.rect)#updating the display
