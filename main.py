@@ -47,6 +47,7 @@ platform3 = createObject.newStatic() #another platform2
 platform3.setParams(50, 300, 450, 80)
 platform3.setColor((124,124,124))
 
+
 land.drawChar(screen) #drawing all of the land characters, as originally it was done every gametick,
 land2.drawChar(screen)#before the newStatic class had a tick function
 leftLand.drawChar(screen)
