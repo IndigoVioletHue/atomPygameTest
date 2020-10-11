@@ -36,7 +36,7 @@ leftLand.setColor((124,200,124))
 leftLand.isGround()
 
 platform = createObject.newStatic() #platform
-platform.setParams(50, 300, 50, 580)
+platform.setParams(50, 300, 50, 480)
 platform.setColor((124,124,124))
 
 platform2 = createObject.newStatic() #another platform2
@@ -113,11 +113,11 @@ while running: #main gameloop. Kinda stolen?
         elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
-        if player.rect.y >= 720: #if the player x is a certain number, move the land.
+        if player.rect.y >= 720-player.height-1: #if the player x is a certain number, move the land.
             staticObjects[i].setY(-5)
         elif player.rect.y <= 0: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(5)
-        elif player.rect.y > 0 or player.rect.y <= 720: #if the x value is smaller than 100 and the key ISNT up.
+        elif player.rect.y > 0 or player.rect.y <= 720-player.height-1: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)

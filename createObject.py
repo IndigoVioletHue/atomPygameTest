@@ -133,24 +133,21 @@ class newMoveable:
             xvalues = []
             for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width): #finding all of their x values
                 xvalues.append(x)
-            yvalues = []
-            for y in range(staticObjects[j].rect.y,staticObjects[j].rect.y +staticObjects[j].height): #finding all of their x values
-                yvalues.append(y)
             for i in range(roundup(self.rect.y), 900, 10):
                 if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y pos
                         groundY = staticObjects[j].rect.y
-            if staticObjects[j].rect.x == self.rect.x + self.width and self.rect.y in yvalues or staticObjects[j].rect.x + staticObjects[j].width == self.rect.x and self.rect.y in yvalues: #only the left side of the player can touch the right side of the rects, and vice versa.
-                self.velX = 0
             if staticObjects[j].isground == True and groundY <= staticObjects[j].rect.y: #this should ensure the ground's y is equal to the grounds Y value if it cannot find one
                 groundY = staticObjects[j].rect.y
         print(groundY, self.rect.y)
 
         if roundup(self.rect.y) < groundY - self.height: #if the players y value is below (-is up, +is down) the grounds y value:
             self.velY +=1
-        elif self.velY+staticObjects[0].uord > staticObjects[0].uord: #if the velocity of the player + the land > than the lands speed,
+        elif self.Jump == True and self.velY > 0: #if the velocity of the player + the land > than the lands speed,
             self.velY = staticObjects[0].uord #setting the velocity of the player when its still to the speed the platforms are moving
             self.rect.y = groundY - self.height
             self.Jump = False;
+        elif self.Jump == False and self.velY != staticObjects[0].uord:#the player isnt jumping and the velocity of the player isnt the same as the platforms
+            self.velY = staticObjects[0].uord
 
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
             self.velX *= 0.85
