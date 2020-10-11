@@ -110,14 +110,11 @@ while running: #main gameloop. Kinda stolen?
         elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
-        if player.rect.y >= 620: #if the player x is a certain number, move the land.
+        if player.rect.y >= 720: #if the player x is a certain number, move the land.
             staticObjects[i].setY(-5)
-        elif player.rect.y <= 620:
-            staticObjects[i].setY(0)
-
-        if player.rect.y <= 0: #if the x value is smaller than 100 and the key ISNT up.
+        elif player.rect.y <= 0: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(5)
-        elif player.rect.y > 0: #if the x value is smaller than 100 and the key ISNT up.
+        elif player.rect.y > 0 or player.rect.y <= 720: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)

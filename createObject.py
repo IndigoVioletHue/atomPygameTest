@@ -50,8 +50,9 @@ class newStatic:
         self.uord = y;
 
     def tick(self, screen):
-        self.rect = self.rect.move(self.lorr,self.uord)
-        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720):
+        if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
+            self.rect = self.rect.move(self.lorr,self.uord)
+        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
             return
         pygame.draw.rect(screen, self.color, self.rect)
         pygame.display.update(self.rect)
@@ -71,7 +72,7 @@ class newMoveable:
         self.rkupx = False;
         self.Jump = False;
         self.crouching = False;
-        self.groundY = 820;
+        self.groundY = 999;
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
