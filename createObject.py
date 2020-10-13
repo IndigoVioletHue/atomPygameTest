@@ -54,12 +54,13 @@ class newStatic:
         self.uord = y;
 
     def tick(self, screen):
+        self.screen = screen;
         self.rect = self.rect.move(self.lorr,0)
         if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
             self.rect = self.rect.move(0,self.uord)
         if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
             return
-        pygame.draw.rect(screen, self.color, self.rect)
+        pygame.draw.rect(self.screen, self.color, self.rect)
         pygame.display.update(self.rect)
         if self.kupx == True:
             self.lorr *= 0.85
@@ -140,6 +141,7 @@ class newMoveable:
                 groundY = staticObjects[j].rect.y
         print(groundY, self.rect.y)
 
+        #Falling Logic \/
         if roundup(self.rect.y) < groundY - self.height: #if the players y value is below (-is up, +is down) the grounds y value:
             self.velY +=1
         elif self.Jump == True and self.velY > 0: #if the velocity of the player + the land > than the lands speed,
@@ -148,7 +150,11 @@ class newMoveable:
             self.Jump = False;
         elif self.Jump == False and self.velY != staticObjects[0].uord:#the player isnt jumping and the velocity of the player isnt the same as the platforms
             self.velY = staticObjects[0].uord
+        elif self.Jump == False and staticObjects[0].uord == 0:
+            self.rect.y = groundY - self.height
+        #Falling Logic /\
 
+        #momentum decrease only when the player is not moving
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
             self.velX *= 0.85
 
@@ -157,6 +163,7 @@ class newMoveable:
         if self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100
 
+        #drawing the new rectangle
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
         pygame.display.update(self.rect)#updating the display
