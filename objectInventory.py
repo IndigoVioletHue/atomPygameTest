@@ -1,12 +1,20 @@
 import createObject
+global staticObjects
+BLACK = (0,0,0)
+WHITE = (255,255,255) #defining it because currently, during the only build, these are most of the colours to be used.
 
-def createAllMoveable():
+def createAllMoveable(screen):
+    moveableObjects = []
     player = createObject.newMoveable() #player object creation
     player.setParams(75, 50, 615, 450)
     player.setColor(BLACK)
     player.drawChar(screen)
+    moveableObjects.append(player)
+    
+    return moveableObjects
 
-def createAllStatic():
+def createAllStatic(screen):
+    staticObjects = []
     land = createObject.newStatic() #land object in the middle, might ditch this idea.
     staticObjects.append(land)
     land.setParams(120, 1280, 0, 650)
@@ -47,3 +55,18 @@ def createAllStatic():
     platform.drawChar(screen)
     platform2.drawChar(screen)
     platform3.drawChar(screen)
+    return staticObjects
+
+
+class init:
+
+    def __init__(self, screen):
+        global staticObjects, moveableObjects
+        staticObjects = createAllStatic(screen)
+        moveableObjects = createAllMoveable(screen)
+
+    def getStatic(self):
+        return staticObjects
+
+    def getMoveable(self):
+        return moveableObjects
