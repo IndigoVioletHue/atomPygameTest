@@ -54,6 +54,8 @@ class newStatic:
         self.uord = y
 
     def render(self, screen):
+        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
+            return
         pygame.draw.rect(self.screen, self.color, self.rect)
         pygame.display.update(self.rect)
 
@@ -63,8 +65,7 @@ class newStatic:
 
         if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
             self.rect = self.rect.move(0,self.uord)
-        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
-            return
+
         
         if self.kupx == True:
             self.lorr *= 0.85
@@ -86,7 +87,7 @@ class newMoveable(pygame.sprite.Sprite):
         self.rkupx = False
         self.Jump = False
         self.crouching = False
-        self.groundY = 825 #just a value that is bigger than any screen size possible
+        self.groundY = 720 #just a value that is bigger than any screen size possible
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
@@ -140,30 +141,40 @@ class newMoveable(pygame.sprite.Sprite):
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
 
-        groundY = self.groundY #code for finding what is below it here.
-        for j in range(len(staticObjects)): #listing all of the static objects
-            xvalues = []
-            for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width): #finding all of their x values
-                xvalues.append(x)
-            for i in range(roundup(self.rect.y), 900, 10):
-                if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y pos
-                        groundY = staticObjects[j].rect.y
-            if staticObjects[j].isground == True and groundY <= staticObjects[j].rect.y: #this should ensure the ground's y is equal to the grounds Y value if it cannot find one
-                groundY = staticObjects[j].rect.y
+        groundY = self.groundY 
+
+#        for j in range(len(staticObjects)): #listing all of the static objects
+#            xvalues = []
+#            for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width): #finding all of their x values
+#                xvalues.append(x)
+#            for i in range(roundup(self.rect.y), 900, 10):
+#                if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y pos
+#                        groundY = staticObjects[j].rect.y
+#            if staticObjects[j].isground == True and groundY <= staticObjects[j].rect.y: #this should ensure the ground's y is equal to the grounds Y value if it cannot find one
+#                groundY = staticObjects[j].rect.y
         #print(groundY, self.rect.y)
 
         #Falling Logic \/
-        if roundup(self.rect.y) < groundY - self.height: #if the players y value is below (-is up, +is down) the grounds y value:
+        if self.Jump == True: #if the players y value is below (-is up, +is down) the grounds y value:
             self.velY +=1
-        elif self.Jump == True and self.velY > 0: #if the velocity of the player + the land > than the lands speed,
-            self.velY = staticObjects[0].uord #setting the velocity of the player when its still to the speed the platforms are moving
-            self.rect.y = groundY - self.height
-            self.Jump = False
-        elif self.Jump == False and self.velY != staticObjects[0].uord:#the player isnt jumping and the velocity of the player isnt the same as the platforms
-            self.velY = staticObjects[0].uord
-        elif self.Jump == False and staticObjects[0].uord == 0:
-            self.rect.y = groundY - self.height
+#        elif self.Jump == True and self.velY > 0: #if the velocity of the player + the land > than the lands speed,
+#            self.velY = staticObjects[0].uord #setting the velocity of the player when its still to the speed the platforms are moving
+#            self.rect.y = groundY - self.height
+#            self.Jump = False
+#        elif self.Jump == False and self.velY != staticObjects[0].uord:#the player isnt jumping and the velocity of the player isnt the same as the platforms
+#            self.velY = staticObjects[0].uord
+#        elif self.Jump == False and staticObjects[0].uord == 0:
+#            self.rect.y = groundY - self.height
         #Falling Logic /\
+
+        for i in range(len(staticObjects)): #collision detection
+            if self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.y < staticObjects[i].y - self.height:
+                self.velY = 0
+                self.rect.y = staticObjects[i].y - self.height 
+                self.Jump = False
+                break
+            elif not self.rect.colliderect(staticObjects[i]):
+                self.Jump = True
 
         #momentum decrease only when the player is not moving
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X

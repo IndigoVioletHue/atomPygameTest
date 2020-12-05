@@ -26,17 +26,18 @@ pygame.display.update()
 
 def gametick(threadName, counter): #needs to tick x times per second
     while True:
+        pygame.display.flip()
         screen.fill((255,255,255))
         for i in range(len(staticObjects)):
             staticObjects[i].render(screen)
         player.render(screen)
         pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
-        clock.tick(75)
+        clock.tick(60)
 
 threadLock = threading.Lock()
 
 class thread (threading.Thread):
-    def __init__(self, threadID, name):
+    def __init__(self,threadID, name):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
@@ -50,13 +51,11 @@ class thread (threading.Thread):
         threadLock.release()
 
 
-
 #Loop
 running = True
-gameTick = thread("gametick", 0.04)
+gameTick = thread(1, "gametick")
 gameTick.start()
 while running: #main gameloop. Kinda stolen?
-    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN: #keydown event handling
             if event.key == pygame.K_w:
@@ -105,12 +104,13 @@ while running: #main gameloop. Kinda stolen?
         elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
-        if player.rect.y >= 720-player.height-1: #if the player x is a certain number, move the land.
+        if player.rect.y >= 720-player.height-1: #if the player y is a certain number, move the land.
             staticObjects[i].setY(-5)
-        elif player.rect.y <= 0: #if the x value is smaller than 100 and the key ISNT up.
+        elif player.rect.y <= 0: #if the y value is smaller than 0 and the key ISNT up.
             staticObjects[i].setY(5)
         elif player.rect.y > 0 or player.rect.y <= 720-player.height-1: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)
     clock.tick(60)
+    print(player.rect.x, player.rect.y)

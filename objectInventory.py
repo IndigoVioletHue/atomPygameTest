@@ -1,5 +1,6 @@
 import createObject
-global staticObjects
+moveableObjects = None
+staticObjects = None
 BLACK = (0,0,0)
 WHITE = (255,255,255) #defining it because currently, during the only build, these are most of the colours to be used.
 
