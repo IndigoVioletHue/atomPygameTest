@@ -1,15 +1,15 @@
 #Main file, so just drawing the stages and intialising all the objects that'll be used.
 #I can see a lot of rewriting potential in this code. Swag B)
 
-###PLEASE ONLY PLACE OBJECTS WITH Y VALUES INCREMENTING IN TENS
-import pygame, createObject, math, objectInventory
+###PLEASE ONLY PLACE OBJECTS WITH Y VALUES INCREMENTING IN TENS###
+import pygame, createObject, math, objectInventory, threading, time
 
 def roundup(x): #used in the jump detection
     return int(math.ceil(x / 10.0)) * 10
 
 
-screen = pygame.display.set_mode((1280, 720)) #Setting Screen
-pygame.display.set_caption('Game') #Window Name
+screen = pygame.display.set_mode((1280, 720), vsync=1) #Setting Screen
+pygame.display.set_caption('Test 1234567890') #Window Name
 screen.fill((255,255,255))#Fills white to screen
 clock = pygame.time.Clock()
 FPS = 60 #60FPS 4K Realtime RayTracing B)))))))))))))))
@@ -22,8 +22,39 @@ player = moveableObjects[0] #this'll do for now, only one moveable and the playe
 pygame.init() #intialising pygame
 pygame.display.init()
 pygame.display.update()
+
+
+def gametick(threadName, counter): #needs to tick x times per second
+    while True:
+        screen.fill((255,255,255))
+        for i in range(len(staticObjects)):
+            staticObjects[i].render(screen)
+        player.render(screen)
+        pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
+        clock.tick(75)
+
+threadLock = threading.Lock()
+
+class thread (threading.Thread):
+    def __init__(self, threadID, name):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+
+    def run(self): #initiating the thread
+        print("Starting " + self.name)
+        # Get lock to synchronize threads
+        threadLock.acquire()
+        gametick(self.name, 15) #max 25tps.
+        # Free lock to release next thread
+        threadLock.release()
+
+
+
 #Loop
 running = True
+gameTick = thread("gametick", 0.04)
+gameTick.start()
 while running: #main gameloop. Kinda stolen?
     pygame.display.flip()
     for event in pygame.event.get():
@@ -63,12 +94,10 @@ while running: #main gameloop. Kinda stolen?
                     staticObjects[i].KUPX()
         elif event.type == pygame.QUIT:
             running = False
+            gameTick.join
             pygame.quit()
 
-    screen.fill((255,255,255))
-    clock.tick(FPS)
-
-    for i in range(len(staticObjects)):
+    for i in range(len(staticObjects)): #static objects tick
         staticObjects[i].tick(screen)
         if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is a certain number, move the land.
             staticObjects[i].setX(-5)
@@ -84,5 +113,4 @@ while running: #main gameloop. Kinda stolen?
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)
-
-    pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
+    clock.tick(60)

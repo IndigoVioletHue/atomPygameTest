@@ -5,10 +5,9 @@ WHITE = (255,255,255) #defining it because currently, during the only build, the
 
 def createAllMoveable(screen):
     moveableObjects = []
-    player = createObject.newMoveable() #player object creation
-    player.setParams(75, 50, 615, 450)
+    player = createObject.newMoveable((0,0,0), 50, 75) #player object creation
+    player.setParams(615, 450)
     player.setColor(BLACK)
-    player.drawChar(screen)
     moveableObjects.append(player)
     
     return moveableObjects
