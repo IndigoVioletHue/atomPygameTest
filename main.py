@@ -112,5 +112,5 @@ while running: #main gameloop. Kinda stolen?
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)
-    clock.tick(60)
+    clock.tick(6)
     print(player.rect.x, player.rect.y)

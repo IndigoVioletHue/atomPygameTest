@@ -63,7 +63,7 @@ class newStatic:
         self.screen = screen
         self.rect = self.rect.move(self.lorr,0)
 
-        if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
+        if self.rect.y + self.uord > self.rect.y: #if the place you are trying to move to is above your original position
             self.rect = self.rect.move(0,self.uord)
 
         
@@ -76,6 +76,7 @@ class newMoveable(pygame.sprite.Sprite):
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
         self.rect = self.image.get_rect()
+
         self.width = width
         self.height = height
         self.x = 0
@@ -109,8 +110,8 @@ class newMoveable(pygame.sprite.Sprite):
         self.kupy = False
 
     def setParams(self, x, y): #setting the parameters for drawing
-        self.x = x
-        self.y = y
+        self.rect.x = x
+        self.rect.y = y
 
     def setColor(self, color):#self explanantory really \/
         self.color = color
@@ -168,7 +169,7 @@ class newMoveable(pygame.sprite.Sprite):
         #Falling Logic /\
 
         for i in range(len(staticObjects)): #collision detection
-            if self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.y < staticObjects[i].y - self.height:
+            if self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.rect.y < staticObjects[i].y - self.height:
                 self.velY = 0
                 self.rect.y = staticObjects[i].y - self.height 
                 self.Jump = False
