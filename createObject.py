@@ -142,40 +142,18 @@ class newMoveable(pygame.sprite.Sprite):
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
 
-        groundY = self.groundY 
-
-#        for j in range(len(staticObjects)): #listing all of the static objects
-#            xvalues = []
-#            for x in range(staticObjects[j].rect.x,staticObjects[j].rect.x +staticObjects[j].width): #finding all of their x values
-#                xvalues.append(x)
-#            for i in range(roundup(self.rect.y), 900, 10):
-#                if self.rect.x + self.width//2 in xvalues and i == staticObjects[j].rect.y: #so, if the middle of the player is over a platform, make the ground the platforms y pos
-#                        groundY = staticObjects[j].rect.y
-#            if staticObjects[j].isground == True and groundY <= staticObjects[j].rect.y: #this should ensure the ground's y is equal to the grounds Y value if it cannot find one
-#                groundY = staticObjects[j].rect.y
-        #print(groundY, self.rect.y)
-
-        #Falling Logic \/
-        if self.Jump == True: #if the players y value is below (-is up, +is down) the grounds y value:
-            self.velY +=1
-#        elif self.Jump == True and self.velY > 0: #if the velocity of the player + the land > than the lands speed,
-#            self.velY = staticObjects[0].uord #setting the velocity of the player when its still to the speed the platforms are moving
-#            self.rect.y = groundY - self.height
-#            self.Jump = False
-#        elif self.Jump == False and self.velY != staticObjects[0].uord:#the player isnt jumping and the velocity of the player isnt the same as the platforms
-#            self.velY = staticObjects[0].uord
-#        elif self.Jump == False and staticObjects[0].uord == 0:
-#            self.rect.y = groundY - self.height
-        #Falling Logic /\
-
         for i in range(len(staticObjects)): #collision detection
-            if self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.rect.y < staticObjects[i].y - self.height:
+            if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.height:
+                self.Jump = True
+            elif self.rect.colliderect(staticObjects[i]) and self.velY >=0:
                 self.velY = 0
                 self.rect.y = staticObjects[i].y - self.height 
                 self.Jump = False
                 break
-            elif not self.rect.colliderect(staticObjects[i]):
-                self.Jump = True
+
+
+        if self.Jump == True: #if jumping (in air.)
+            self.velY +=1
 
         #momentum decrease only when the player is not moving
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X

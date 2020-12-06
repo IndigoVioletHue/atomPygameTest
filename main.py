@@ -26,7 +26,7 @@ pygame.display.update()
 
 def gametick(threadName, counter): #needs to tick x times per second
     while True:
-        pygame.display.flip()
+        
         screen.fill((255,255,255))
         for i in range(len(staticObjects)):
             staticObjects[i].render(screen)
@@ -56,6 +56,7 @@ running = True
 gameTick = thread(1, "gametick")
 gameTick.start()
 while running: #main gameloop. Kinda stolen?
+    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN: #keydown event handling
             if event.key == pygame.K_w:
@@ -112,5 +113,5 @@ while running: #main gameloop. Kinda stolen?
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)
-    clock.tick(6)
+    clock.tick(60)
     print(player.rect.x, player.rect.y)
