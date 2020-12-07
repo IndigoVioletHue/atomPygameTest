@@ -28,6 +28,7 @@ def gametick(threadName, counter): #needs to tick x times per second
     while running:
         
         screen.fill((255,255,255))
+        background.fill((255,255,255))
         player.render(background)
         for i in range(len(staticObjects)):
             staticObjects[i].render(background)
@@ -121,4 +122,4 @@ while running: #main gameloop. Kinda stolen?
 
     player.tick(staticObjects)
     clock.tick(60)
-#    print(player.gameX, player.gameY)
+    print(player.gameX, player.gameY)
