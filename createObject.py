@@ -147,7 +147,7 @@ class newMoveable(pygame.sprite.Sprite):
                 self.Jump = True
             elif self.rect.colliderect(staticObjects[i]) and self.velY >=0:
                 self.velY = 0
-                self.rect.y = staticObjects[i].y - self.height 
+                self.rect.y = staticObjects[i].y - self.height + 1
                 self.Jump = False
                 break
 
