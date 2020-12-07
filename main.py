@@ -1,7 +1,6 @@
 #Main file, so just drawing the stages and intialising all the objects that'll be used.
 #I can see a lot of rewriting potential in this code. Swag B)
 
-###PLEASE ONLY PLACE OBJECTS WITH Y VALUES INCREMENTING IN TENS###
 import pygame, createObject, math, objectInventory, threading, time
 
 def roundup(x): #used in the jump detection
@@ -56,7 +55,6 @@ running = True
 gameTick = thread(1, "gametick")
 gameTick.start()
 while running: #main gameloop. Kinda stolen?
-    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN: #keydown event handling
             if event.key == pygame.K_w:
@@ -105,11 +103,11 @@ while running: #main gameloop. Kinda stolen?
         elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
-        if player.rect.y >= 720-player.height-1: #if the player y is a certain number, move the land.
+        if player.rect.y >= 720-player.rect.height-1: #if the player is above the top of the screen, pan all objects down
             staticObjects[i].setY(-5)
-        elif player.rect.y <= 0: #if the y value is smaller than 0 and the key ISNT up.
+        elif player.rect.y <= 0+player.rect.height: #if the player is below the bottom of the screen, pan all objects up
             staticObjects[i].setY(5)
-        elif player.rect.y > 0 or player.rect.y <= 720-player.height-1: #if the x value is smaller than 100 and the key ISNT up.
+        elif player.rect.y > 0 or player.rect.y <= 720-player.rect.height-1: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(0)
 
     player.tick(staticObjects)

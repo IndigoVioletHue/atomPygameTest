@@ -57,13 +57,12 @@ class newStatic:
         if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
             return
         pygame.draw.rect(self.screen, self.color, self.rect)
-        pygame.display.update(self.rect)
 
     def tick(self, screen):
         self.screen = screen
         self.rect = self.rect.move(self.lorr,0)
 
-        if self.rect.y + self.uord > self.rect.y: #if the place you are trying to move to is above your original position
+        if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
             self.rect = self.rect.move(0,self.uord)
 
         
@@ -135,7 +134,6 @@ class newMoveable(pygame.sprite.Sprite):
     def render(self, screen):
         self.screen = screen
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
-        pygame.display.update(self.rect)#updating the display
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
 
@@ -158,8 +156,13 @@ class newMoveable(pygame.sprite.Sprite):
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
             self.velX *= 0.85
 
-        if self.rect.x >= 1180 - 50: #left wall side collision detection
-            self.rect.x = 1180 - 50 #the -50 accounts for the players width
+        if self.rect.x >= 1180 - self.rect.width: #left wall side collision detection
+            self.rect.x = 1180 - self.rect.width #the - accounts for the players width
         if self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100
+        
+        if self.rect.y > 1000:
+            for i in range(len(staticObjects)):
+                staticObjects[i].rect.x, staticObjects[i].rect.y = staticObjects[i].x, staticObjects[i].y
+            self.rect.x, self.rect.y = 1280//2,720//2
 
