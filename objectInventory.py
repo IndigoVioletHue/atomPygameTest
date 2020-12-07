@@ -6,9 +6,9 @@ WHITE = (255,255,255) #defining it because currently, during the only build, the
 
 def createAllMoveable(screen):
     moveableObjects = []
-    player = createObject.newMoveable((0,0,0), 50, 75) #player object creation
+    player = createObject.newMoveable((124,124,124), 50, 75) #player object creation
     player.setParams(615, 450)
-    player.setColor(BLACK)
+    player.setColor((124,124,124))
     moveableObjects.append(player)
     
     return moveableObjects
@@ -55,8 +55,9 @@ class init:
 
     def __init__(self, screen):
         global staticObjects, moveableObjects
-        staticObjects = createAllStatic(screen)
         moveableObjects = createAllMoveable(screen)
+        staticObjects = createAllStatic(screen)
+
 
     def getStatic(self):
         return staticObjects

@@ -1,7 +1,7 @@
 #Main file, so just drawing the stages and intialising all the objects that'll be used.
 #I can see a lot of rewriting potential in this code. Swag B)
 
-import pygame, createObject, math, objectInventory, threading, time
+import pygame, createObject, math, objectInventory, threading, time, sys
 
 def roundup(x): #used in the jump detection
     return int(math.ceil(x / 10.0)) * 10
@@ -28,12 +28,13 @@ def gametick(threadName, counter): #needs to tick x times per second
     while running:
         
         screen.fill((255,255,255))
-        player.render(screen)
+        player.render(background)
         for i in range(len(staticObjects)):
             staticObjects[i].render(background)
+            background.blit(staticObjects[i].image, (staticObjects[i].rect.x, staticObjects[i].rect.y))
+        background.blit(player.image, (player.rect.x, player.rect.y))
         screen.blit(background,(0,0))
-        
-
+    
         pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
 
 #        clock.tick(75)
@@ -101,6 +102,7 @@ while running: #main gameloop. Kinda stolen?
             running = False
             gameTick.join
             pygame.quit()
+            sys.exit()
 
     for i in range(len(staticObjects)): #static objects tick
         staticObjects[i].tick(screen)
@@ -119,4 +121,4 @@ while running: #main gameloop. Kinda stolen?
 
     player.tick(staticObjects)
     clock.tick(60)
-    print(player.gameX, player.gameY)
+#    print(player.gameX, player.gameY)

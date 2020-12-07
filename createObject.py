@@ -30,6 +30,7 @@ class newStatic(pygame.sprite.Sprite):
         self.y = y
         self.lorr = 0 #lorr == set X Vel
         self.uord = 0
+        self.blittable = None
         self.kupx = False
         self.kupy = False
         self.isground = False
@@ -71,7 +72,7 @@ class newStatic(pygame.sprite.Sprite):
     def render(self, screen):
         if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
             return
-        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
+        pygame.draw.rect(screen, self.color, self.rect)#drawing the new rect
 
     def tick(self, screen):
         self.screen = screen
@@ -104,6 +105,7 @@ class newMoveable(pygame.sprite.Sprite):
         self.Jump = False
         self.crouching = False
         self.groundY = 720 
+        self.blittable = None
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
@@ -148,7 +150,7 @@ class newMoveable(pygame.sprite.Sprite):
             return
 
     def render(self, screen):
-        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
+        pygame.draw.rect(screen, self.color, self.rect)#drawing the new rect
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
