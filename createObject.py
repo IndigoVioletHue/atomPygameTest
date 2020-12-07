@@ -7,12 +7,19 @@ import pygame, math
 def roundup(x):
     return int(math.ceil(x / 10.0)) * 10
 
-class newStatic:
-    def __init__(self): #initiatialising
-        self.height = 0
-        self.width = 0
-        self.x = 0
-        self.y = 0
+class newStatic(pygame.sprite.Sprite):
+    def __init__(self, color, width, height, x, y, screen): #initialising all the variables.
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([width,height])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.rect = pygame.draw.rect(screen, color, (x,y,width,height))
+        self.screen = screen
+        self.color = color
+        self.height = height
+        self.width = width
+        self.x = x
+        self.y = y
         self.lorr = 0 #lorr == set X Vel
         self.uord = 0
         self.kupx = False
@@ -45,7 +52,7 @@ class newStatic:
 
     def drawChar(self, screen):#drawing the initial character
         self.screen = screen
-        self.rect = pygame.draw.rect(screen, self.color, (self.x,self.y,self.width,self.height))
+        self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.rect.width,self.rect.height))
 
     def setX(self, x):
         self.lorr = x
@@ -75,7 +82,8 @@ class newMoveable(pygame.sprite.Sprite):
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
         self.rect = self.image.get_rect()
-
+        self.gameX = 0
+        self.gameY = 0
         self.width = width
         self.height = height
         self.x = 0
@@ -136,8 +144,9 @@ class newMoveable(pygame.sprite.Sprite):
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
-
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
+        self.gameX = self.rect.x + -(staticObjects[0].rect.x)
+        self.gameY = self.rect.y + -(staticObjects[0].rect.y)
 
         for i in range(len(staticObjects)): #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.height:
@@ -156,9 +165,10 @@ class newMoveable(pygame.sprite.Sprite):
         if self.lkupx == True and self.rkupx == True: #kupx = Key Up X
             self.velX *= 0.85
 
+
         if self.rect.x >= 1180 - self.rect.width: #left wall side collision detection
             self.rect.x = 1180 - self.rect.width #the - accounts for the players width
-        if self.rect.x <= 100: #right wall side collision detection
+        elif self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100
         
         if self.rect.y > 1000:

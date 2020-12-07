@@ -22,6 +22,9 @@ pygame.init() #intialising pygame
 pygame.display.init()
 pygame.display.update()
 
+background = pygame.Surface(screen.get_size())
+background = background.convert()
+background.fill((250, 250, 250))
 
 def gametick(threadName, counter): #needs to tick x times per second
     while running:
@@ -31,6 +34,7 @@ def gametick(threadName, counter): #needs to tick x times per second
             staticObjects[i].render(screen)
         player.render(screen)
         pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
+
         clock.tick(75)
 
 threadLock = threading.Lock()
@@ -60,6 +64,7 @@ while running: #main gameloop. Kinda stolen?
             if event.key == pygame.K_w:
                 player.inJump()
             elif event.key == pygame.K_a:
+                player.gameX -=5
                 if player.rect.x <= 100 and player.lkupx == False: #left side of page
                     for i in range(len(staticObjects)):
                         staticObjects[i].setX(5)
@@ -112,4 +117,4 @@ while running: #main gameloop. Kinda stolen?
 
     player.tick(staticObjects)
     clock.tick(60)
-    print(player.rect.x, player.rect.y)
+    print(player.gameX, player.gameY)
