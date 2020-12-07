@@ -4,8 +4,16 @@
 #of a pretty messy program. Oh well, its a seperate module.
 import pygame, math
 
+pygame.init()
+
 def roundup(x):
     return int(math.ceil(x / 10.0)) * 10
+
+class newText(pygame.font.Font):
+    def __init__(self, text, size, color):
+        content = pygame.font.Font(None, size)
+        self = content.render(text, 1, color)
+    
 
 class newStatic(pygame.sprite.Sprite):
     def __init__(self, color, width, height, x, y, screen): #initialising all the variables.
@@ -63,7 +71,7 @@ class newStatic(pygame.sprite.Sprite):
     def render(self, screen):
         if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
             return
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
 
     def tick(self, screen):
         self.screen = screen
@@ -95,7 +103,7 @@ class newMoveable(pygame.sprite.Sprite):
         self.rkupx = False
         self.Jump = False
         self.crouching = False
-        self.groundY = 720 #just a value that is bigger than any screen size possible
+        self.groundY = 720 
 
     def printCoords(self):
         return self.rect.x, self.rect.y #printing the x and y.
@@ -140,7 +148,6 @@ class newMoveable(pygame.sprite.Sprite):
             return
 
     def render(self, screen):
-        self.screen = screen
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.

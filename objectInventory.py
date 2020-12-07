@@ -40,6 +40,7 @@ def createAllStatic(screen):
     platform4 = createObject.newStatic((124,124,124), 300, 50, 450, -80, screen) #another platform2
     staticObjects.append(platform4)
 
+    text1 = createObject.newText("5000", 36, (124,124,124))
 
     land.drawChar(screen) #drawing all of the land characters, as originally it was done every gametick,
     land2.drawChar(screen)#before the newStatic class had a tick function

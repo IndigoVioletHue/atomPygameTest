@@ -22,20 +22,21 @@ pygame.init() #intialising pygame
 pygame.display.init()
 pygame.display.update()
 
-background = pygame.Surface(screen.get_size())
-background = background.convert()
-background.fill((250, 250, 250))
+background = pygame.Surface((1280, 720))
 
 def gametick(threadName, counter): #needs to tick x times per second
     while running:
         
         screen.fill((255,255,255))
-        for i in range(len(staticObjects)):
-            staticObjects[i].render(screen)
         player.render(screen)
+        for i in range(len(staticObjects)):
+            staticObjects[i].render(background)
+        screen.blit(background,(0,0))
+        
+
         pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
 
-        clock.tick(75)
+#        clock.tick(75)
 
 threadLock = threading.Lock()
 
@@ -58,6 +59,7 @@ class thread (threading.Thread):
 running = True
 gameTick = thread(1, "gametick")
 gameTick.start()
+#pygame.display.flip()
 while running: #main gameloop. Kinda stolen?
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN: #keydown event handling
