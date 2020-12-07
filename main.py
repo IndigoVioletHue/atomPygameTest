@@ -25,14 +25,14 @@ pygame.display.update()
 
 
 def gametick(threadName, counter): #needs to tick x times per second
-    while True:
+    while running:
         
         screen.fill((255,255,255))
         for i in range(len(staticObjects)):
             staticObjects[i].render(screen)
         player.render(screen)
         pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
-        clock.tick(60)
+        clock.tick(75)
 
 threadLock = threading.Lock()
 

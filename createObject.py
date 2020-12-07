@@ -134,20 +134,19 @@ class newMoveable(pygame.sprite.Sprite):
 
     def render(self, screen):
         self.screen = screen
-
-        #drawing the new rectangle
-        self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
         pygame.draw.rect(self.screen, (0, 0, self.width, self.height), self.rect)#drawing the new rect
         pygame.display.update(self.rect)#updating the display
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
+
+        self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
 
         for i in range(len(staticObjects)): #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.height:
                 self.Jump = True
             elif self.rect.colliderect(staticObjects[i]) and self.velY >=0:
                 self.velY = 0
-                self.rect.y = staticObjects[i].y - self.height + 1
+                self.rect.y = staticObjects[i].rect.y - self.height + 1
                 self.Jump = False
                 break
 
