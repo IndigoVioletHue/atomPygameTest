@@ -21,12 +21,13 @@ player = moveableObjects[0] #this'll do for now, only one moveable and the playe
 pygame.init() #intialising pygame
 pygame.display.init()
 pygame.display.update()
+#pygame.display.toggle_fullscreen()
+
 
 background = pygame.Surface((1280, 720))
 
 def gametick(threadName, counter): #needs to tick x times per second
     while running:
-        
         screen.fill((255,255,255))
         background.fill((255,255,255))
         player.render(background)
@@ -37,8 +38,6 @@ def gametick(threadName, counter): #needs to tick x times per second
         screen.blit(background,(0,0))
     
         pygame.display.update()#fancy lil uhhh lil uhhhh display update for ya
-
-#        clock.tick(75)
 
 threadLock = threading.Lock()
 
@@ -107,10 +106,10 @@ while running: #main gameloop. Kinda stolen?
 
     for i in range(len(staticObjects)): #static objects tick
         staticObjects[i].tick(screen)
-        if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is a certain number, move the land.
+        if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is on the right side of the screen and trying to move across
             staticObjects[i].setX(-5)
             staticObjects[i].KDPX()
-        elif player.rect.x <= 100 and player.lkupx == False: #if the x value is smaller than 100 and the key ISNT up.
+        elif player.rect.x <= 100 and player.lkupx == False: #if the x value is if the player is on the left of the screen and trying to move left
             staticObjects[i].setX(5)
             staticObjects[i].KDPX()
         if player.rect.y >= 720-player.rect.height-1: #if the player is above the top of the screen, pan all objects down
@@ -119,7 +118,9 @@ while running: #main gameloop. Kinda stolen?
             staticObjects[i].setY(5)
         elif player.rect.y > 0 or player.rect.y <= 720-player.rect.height-1: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(0)
+#        print(staticObjects[i].rect)
+#        if player.rect.colliderect(staticObjects[i].rect) == True: print(player.rect.colliderect(staticObjects[i].rect))
 
     player.tick(staticObjects)
     clock.tick(60)
-    print(player.gameX, player.gameY)
+    print(player.gameX, player.gameY, -(staticObjects[0].rect.x))

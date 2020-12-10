@@ -16,7 +16,7 @@ def createAllMoveable(screen):
 def createAllStatic(screen):
     staticObjects = []
     #(color, width, height, x, y, screen)
-    land = createObject.newStatic((124,124,124), 2560, 120, 0, 650, screen) #land object in the middle, might ditch this idea.
+    land = createObject.newStatic((124,124,124), 1280, 120, 0, 650, screen) #land object in the middle, might ditch this idea.
     staticObjects.append(land)
     land.isGround()
 

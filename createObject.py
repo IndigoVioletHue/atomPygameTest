@@ -20,6 +20,7 @@ class newStatic(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
+
         self.rect = self.image.get_rect()
         self.rect = pygame.draw.rect(screen, color, (x,y,width,height))
         self.screen = screen
@@ -61,7 +62,7 @@ class newStatic(pygame.sprite.Sprite):
 
     def drawChar(self, screen):#drawing the initial character
         self.screen = screen
-        self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.rect.width,self.rect.height))
+        self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.width,self.height))
 
     def setX(self, x):
         self.lorr = x
@@ -70,18 +71,17 @@ class newStatic(pygame.sprite.Sprite):
         self.uord = y
 
     def render(self, screen):
-        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
-            return
-        pygame.draw.rect(screen, self.color, self.rect)#drawing the new rect
+#        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
+#            pass
+        self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.width,self.height))#drawing the new rect
 
     def tick(self, screen):
         self.screen = screen
-        self.rect = self.rect.move(self.lorr,0)
+        self.rect.move_ip(self.lorr,0)
 
         if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
-            self.rect = self.rect.move(0,self.uord)
-
-        
+            self.rect.move_ip(0,self.uord)
+ 
         if self.kupx == True:
             self.lorr *= 0.85
 
@@ -90,7 +90,9 @@ class newMoveable(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([width,height])
         self.image.fill(color)
+#        self.image = pygame.image.load("8219_cheems.png").convert_alpha()
         self.rect = self.image.get_rect()
+        self.rect.center = self.rect.width//2, self.rect.height//2
         self.gameX = 0
         self.gameY = 0
         self.width = width
@@ -150,7 +152,7 @@ class newMoveable(pygame.sprite.Sprite):
             return
 
     def render(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)#drawing the new rect
+        self.rect = pygame.draw.rect(screen, self.color, self.rect)#drawing the new rect
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
@@ -158,11 +160,11 @@ class newMoveable(pygame.sprite.Sprite):
         self.gameY = self.rect.y + -(staticObjects[0].rect.y)
 
         for i in range(len(staticObjects)): #collision detection
-            if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.height:
+            if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.rect.height:
                 self.Jump = True
             elif self.rect.colliderect(staticObjects[i]) and self.velY >=0:
                 self.velY = 0
-                self.rect.y = staticObjects[i].rect.y - self.height + 1
+                self.rect.y = staticObjects[i].rect.y - self.rect.height + 1
                 self.Jump = False
                 break
 
