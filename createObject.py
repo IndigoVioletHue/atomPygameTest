@@ -2,7 +2,7 @@
 #Static, moveable, interactable, and mountable(?)
 #I could probably cram these all into one object, but it helps debugging, at the expense
 #of a pretty messy program. Oh well, its a seperate module.
-import pygame, math
+import pygame, math, random
 
 pygame.init()
 
@@ -14,6 +14,10 @@ class newText(pygame.font.Font):
         content = pygame.font.Font(None, size)
         self = content.render(text, 1, color)
     
+class newChunk(pygame.sprite.Sprite):
+    def __init__(self, width):
+        pygame.sprite.Sprite.__init__(self)
+
 
 class newStatic(pygame.sprite.Sprite):
     def __init__(self, color, width, height, x, y, screen): #initialising all the variables.
@@ -64,6 +68,9 @@ class newStatic(pygame.sprite.Sprite):
         self.screen = screen
         self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.width,self.height))
 
+    def isGround(self):
+        self.isground = True
+
     def setX(self, x):
         self.lorr = x
 
@@ -73,6 +80,11 @@ class newStatic(pygame.sprite.Sprite):
     def render(self, screen):
 #        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
 #            pass
+        if self.isground and (self.rect.x > 1280):
+            self.rect.x = 0
+        if self.isground and (self.rect.x < 0):
+            self.rect.x = 1280-self.width
+            
         self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.width,self.height))#drawing the new rect
 
     def tick(self, screen):

@@ -1,4 +1,5 @@
-import createObject
+
+import createObject, random
 moveableObjects = None
 staticObjects = None
 BLACK = (0,0,0)
@@ -15,39 +16,37 @@ def createAllMoveable(screen):
 
 def createAllStatic(screen):
     staticObjects = []
+    chunk_width = 5
+    screen_width = screen.get_width()
+    prev_y = 650 #actually starting y in this context but needs a starting value
     #(color, width, height, x, y, screen)
-    land = createObject.newStatic((124,124,124), 1280, 120, 0, 650, screen) #land object in the middle, might ditch this idea.
-    staticObjects.append(land)
-    land.isGround()
+    with open('chunk_data/howlowcanigo.txt', 'w') as f:
+        f.write("\nM,")
+        for i in range(0, screen_width+(chunk_width*2), chunk_width):
+            staticObjects.append(str("land_chunk_"+str(i))) #getting a list of all the chunks to be made along the bottom of the screen
+            f.write(str(prev_y) + ",")
+            staticObjects[i//chunk_width] = createObject.newStatic((124,124,124), chunk_width, 720-prev_y, i, prev_y, screen)
+            staticObjects[i//chunk_width].isGround()
+            prev_y = random.randint(prev_y-5,prev_y+5)
+            if prev_y >= 720: prev_y = 710
+    f.close()
 
-    land2 = createObject.newStatic((200,124,200), 1280, 120, 1280, 650, screen) #right land
-    staticObjects.append(land2)
-    land2.isGround()
 
-    leftLand = createObject.newStatic((124,200,124), 1280, 120, -1280, 650, screen) #left land
-    staticObjects.append(leftLand)
-    leftLand.isGround()
+#    platform = createObject.newStatic((124,124,124), 300, 50, 50, 480, screen) #platform
+#    staticObjects.append(platform)
 
-    platform = createObject.newStatic((124,124,124), 300, 50, 50, 480, screen) #platform
-    staticObjects.append(platform)
+#    platform2 = createObject.newStatic((124,124,124), 300, 50, 250, 280, screen) #another platform2
+#    staticObjects.append(platform2)
 
-    platform2 = createObject.newStatic((124,124,124), 300, 50, 250, 280, screen) #another platform2
-    staticObjects.append(platform2)
+#    platform3 = createObject.newStatic((124,124,124), 300, 50, 450, 80, screen) #another platform2
+#    staticObjects.append(platform3)
 
-    platform3 = createObject.newStatic((124,124,124), 300, 50, 450, 80, screen) #another platform2
-    staticObjects.append(platform3)
+#    platform4 = createObject.newStatic((124,124,124), 300, 50, 450, -80, screen) #another platform2
+#    staticObjects.append(platform4)
 
-    platform4 = createObject.newStatic((124,124,124), 300, 50, 450, -80, screen) #another platform2
-    staticObjects.append(platform4)
+#    text1 = createObject.newText("5000", 36, (124,124,124))
 
-    text1 = createObject.newText("5000", 36, (124,124,124))
 
-    land.drawChar(screen) #drawing all of the land characters, as originally it was done every gametick,
-    land2.drawChar(screen)#before the newStatic class had a tick function
-    leftLand.drawChar(screen)
-    platform.drawChar(screen)
-    platform2.drawChar(screen)
-    platform3.drawChar(screen)
     return staticObjects
 
 
@@ -64,3 +63,16 @@ class init:
 
     def getMoveable(self):
         return moveableObjects
+
+if __name__ == '__main__':
+    class screen:
+        def __init__(self):
+            self.width = 1280
+
+    testscreen = screen
+    testscreen.__init__(testscreen)
+    staticObjects = []
+    chunk_width = 10
+    for i in range(0, screen.width+chunk_width, chunk_width):
+        staticObjects.append(str("land_chunk_"+str(i)))
+    print(staticObjects)
