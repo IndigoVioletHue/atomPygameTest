@@ -186,4 +186,5 @@ class newMoveable(pygame.sprite.Sprite):
             for i in range(len(staticObjects)):
                 staticObjects[i].rect.x, staticObjects[i].rect.y = staticObjects[i].x, staticObjects[i].y
             self.rect.x, self.rect.y = 1280//2,720//2
+            self.velY, self.velX = 0, 0
 
