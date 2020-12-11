@@ -41,6 +41,7 @@ class newStatic(pygame.sprite.Sprite):
         self.isground = False
         self.rchunks = 0
         self.lchunks = 0
+        self.game_x = self.rect.x
 
     def setParams(self, height, width, x, y):
         self.height = height
@@ -92,6 +93,13 @@ class newStatic(pygame.sprite.Sprite):
 
         if self.isground and (self.rect.x > 1280):
             self.rect.x = 0
+            pass
+            f = open("chunks","w+")
+            coords = f.read()
+            coords.split(";")
+            if str(self.game_x) in coords:
+                pass
+
 #            self.rchunks+=1
 #            with open('chunk_data/howlowcanigo.txt', 'a+') as f:
 #                lines = f.readlines()
