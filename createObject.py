@@ -39,6 +39,8 @@ class newStatic(pygame.sprite.Sprite):
         self.kupx = False
         self.kupy = False
         self.isground = False
+        self.rchunks = 0
+        self.lchunks = 0
 
     def setParams(self, height, width, x, y):
         self.height = height
@@ -80,16 +82,27 @@ class newStatic(pygame.sprite.Sprite):
     def render(self, screen):
 #        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
 #            pass
-        if self.isground and (self.rect.x > 1280):
-            self.rect.x = 0
-        if self.isground and (self.rect.x < 0):
-            self.rect.x = 1280-self.width
-            
+
         self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.width,self.height))#drawing the new rect
 
     def tick(self, screen):
         self.screen = screen
         self.rect.move_ip(self.lorr,0)
+        
+
+        if self.isground and (self.rect.x > 1280):
+            self.rect.x = 0
+#            self.rchunks+=1
+#            with open('chunk_data/howlowcanigo.txt', 'a+') as f:
+#                lines = f.readlines()
+#                f.seek(0)
+#                f.write("\nR,")
+#                f.write(str(self.rect.y)+ ",")
+#                f.writelines(lines)  #this is the code for inserting chunks to the right.
+                
+        if self.isground and (self.rect.x < 0):
+            self.rect.x = 1280-self.width
+            
 
         if self.rect.y + self.uord > self.y: #if the place you are trying to move to is above your original position
             self.rect.move_ip(0,self.uord)
@@ -174,7 +187,7 @@ class newMoveable(pygame.sprite.Sprite):
         for i in range(len(staticObjects)): #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.rect.height:
                 self.Jump = True
-            elif self.rect.colliderect(staticObjects[i]) and self.velY >=0:
+            elif self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.Jump:
                 self.velY = 0
                 self.rect.y = staticObjects[i].rect.y - self.rect.height + 1
                 self.Jump = False
