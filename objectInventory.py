@@ -26,7 +26,7 @@ def createAllStatic(screen):
             f.write(str(i) + "," + str(prev_y) + ";")
             staticObjects[i//chunk_width] = createObject.newStatic((124,124,124), chunk_width, 720-prev_y, i, prev_y, screen)
             staticObjects[i//chunk_width].isGround()
-            prev_y = random.randint(prev_y-5,prev_y+5)
+            prev_y = random.randint(prev_y-3,prev_y+3)
             if prev_y >= 720: prev_y = 710
     f.close()
 #

@@ -2,6 +2,7 @@
 #Static, moveable, interactable, and mountable(?)
 #I could probably cram these all into one object, but it helps debugging, at the expense
 #of a pretty messy program. Oh well, its a seperate module.
+import sys
 import pygame, math, random
 
 pygame.init()
@@ -89,20 +90,23 @@ class newStatic(pygame.sprite.Sprite):
     def tick(self, screen):
         self.screen = screen
         self.rect.move_ip(self.lorr,0)
-        self.game_x += self.lorr
+        self.game_x -= self.lorr
 
         if self.isground and (self.rect.x > 1280):
             self.rect.x = 0
-            pass
+            self.game_x = int(self.game_x)
             f = open("chunks.txt","r")
             coords = f.read()
             coords = coords.split(";")
             full_coords = []
             for i in range(len(coords)):
-                full_coords.append(coords[i].split(","))
-            print(full_coords)
-            if str(self.game_x) in full_coords:
-                pass
+                x = coords[i].split(",")
+                if '[' in x[0] and ']' in x[:0]: x[0] = x[0] - '[';x[len(x)-1]= x[len(x)-1] - ']'
+                full_coords.append(x)
+#            print(full_coords)
+#            if str(self.game_x) in full_coords:
+            print(coords, full_coords[12][1])#.index(str(roundup(self.game_x)))-1)
+            sys.exit()
 
 #            self.rchunks+=1
 #            with open('chunk_data/howlowcanigo.txt', 'a+') as f:
@@ -193,8 +197,8 @@ class newMoveable(pygame.sprite.Sprite):
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
-        self.gameX += self.velX
-        self.gameY += self.velY
+        self.gameX += self.velX + -(staticObjects[0].lorr)
+        self.gameY += self.velY + -(staticObjects[0].uord)
 
         for i in range(len(staticObjects)): #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.rect.height:
@@ -216,8 +220,10 @@ class newMoveable(pygame.sprite.Sprite):
 
         if self.rect.x >= 1180 - self.rect.width: #left wall side collision detection
             self.rect.x = 1180 - self.rect.width #the - accounts for the players width
+            self.velX = 0
         elif self.rect.x <= 100: #right wall side collision detection
             self.rect.x = 100
+            self.velX = 0
         
         if self.rect.y > 1000:
             for i in range(len(staticObjects)):

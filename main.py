@@ -124,4 +124,4 @@ while running: #main gameloop. Kinda stolen?
 
     player.tick(staticObjects)
     clock.tick(60)
-    print(rnd(player.gameX, 2), player.gameY, staticObjects[0].game_x)
+#    print(round(player.gameX, 0), player.gameY, staticObjects[0].game_x)
