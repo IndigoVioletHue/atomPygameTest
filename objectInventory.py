@@ -22,8 +22,8 @@ def createAllStatic(screen):
     #(color, width, height, x, y, screen)
     with open('chunks.txt', 'w+') as f:
         for i in range(0, screen_width+(chunk_width*2), chunk_width):
-            staticObjects.append("(" + str(i) + "," + str(prev_y) + ")") #getting a list of all the chunks to be made along the bottom of the screen
-            f.write("(" + str(i) + "," + str(prev_y) + ");")
+            staticObjects.append(str(i) + "," + str(prev_y)) #getting a list of all the chunks to be made along the bottom of the screen
+            f.write(str(i) + "," + str(prev_y) + ";")
             staticObjects[i//chunk_width] = createObject.newStatic((124,124,124), chunk_width, 720-prev_y, i, prev_y, screen)
             staticObjects[i//chunk_width].isGround()
             prev_y = random.randint(prev_y-5,prev_y+5)
