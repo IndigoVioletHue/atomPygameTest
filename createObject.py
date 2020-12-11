@@ -89,15 +89,19 @@ class newStatic(pygame.sprite.Sprite):
     def tick(self, screen):
         self.screen = screen
         self.rect.move_ip(self.lorr,0)
-        
+        self.game_x += self.lorr
 
         if self.isground and (self.rect.x > 1280):
             self.rect.x = 0
             pass
             f = open("chunks.txt","r")
             coords = f.read()
-            coords.split(";")
-            if str(self.game_x) in coords:
+            coords = coords.split(";")
+            full_coords = []
+            for i in range(len(coords)):
+                full_coords.append(coords[i].split(","))
+            print(full_coords)
+            if str(self.game_x) in full_coords:
                 pass
 
 #            self.rchunks+=1
@@ -132,8 +136,8 @@ class newMoveable(pygame.sprite.Sprite):
         self.height = height
         self.x = 0
         self.y = 0
-        self.velX = 0
-        self.velY = 0
+        self.velX = self.rect.x
+        self.velY = self.rect.y
         self.kupy = False
         self.lkupx = False
         self.rkupx = False
@@ -189,8 +193,8 @@ class newMoveable(pygame.sprite.Sprite):
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
-        self.gameX = self.rect.x + -(staticObjects[0].rect.x)
-        self.gameY = self.rect.y + -(staticObjects[0].rect.y)
+        self.gameX += self.velX
+        self.gameY += self.velY
 
         for i in range(len(staticObjects)): #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.rect.height:
