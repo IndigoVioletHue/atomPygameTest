@@ -2,6 +2,7 @@
 #I can see a lot of rewriting potential in this code. Swag B)
 
 import pygame, createObject, math, objectInventory, threading, time, sys
+from pygame import *
 
 def roundup(x): #used in the jump detection
     return int(math.ceil(x / 10.0)) * 10
