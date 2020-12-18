@@ -93,6 +93,7 @@ class newStatic(pygame.sprite.Sprite):
         self.game_x -= self.lorr
 
         if self.isground and (self.rect.x > 1280):
+            self.game_x -= self.rect.x
             self.rect.x = 0
             self.game_x = int(self.game_x)
             f = open("chunks.txt","r")
@@ -101,21 +102,15 @@ class newStatic(pygame.sprite.Sprite):
             full_coords = []
             for i in range(len(coords)):
                 x = coords[i].split(",")
-                if '[' in x[0] and ']' in x[:0]: x[0] = x[0] - '[';x[len(x)-1]= x[len(x)-1] - ']'
-                full_coords.append(x)
-#            print(full_coords)
-#            if str(self.game_x) in full_coords:
-            print(coords, full_coords[12][1])#.index(str(roundup(self.game_x)))-1)
-            sys.exit()
+#                print(x)
+                full_coords.append(x[0]);full_coords.append(x[len(x)-1])
 
-#            self.rchunks+=1
-#            with open('chunk_data/howlowcanigo.txt', 'a+') as f:
-#                lines = f.readlines()
-#                f.seek(0)
-#                f.write("\nR,")
-#                f.write(str(self.rect.y)+ ",")
-#                f.writelines(lines)  #this is the code for inserting chunks to the right.
-                
+#            print(full_coords)
+
+#            if str(self.game_x) in full_coords:
+#            print(coords)#str(roundup(self.game_x)) is str(full_coords[len(full_coords)-2][0]), roundup(self.game_x), full_coords[len(full_coords)-2][0])#.index(roundup(self.game_x))-1)
+#            sys.exit()
+
         if self.isground and (self.rect.x < 0):
             self.rect.x = 1280-self.width
             

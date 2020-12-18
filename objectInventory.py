@@ -21,7 +21,7 @@ def createAllStatic(screen):
     prev_y = 650 #actually starting y in this context but needs a starting value
     #(color, width, height, x, y, screen)
     with open('chunks.txt', 'w+') as f:
-        for i in range(0, screen_width+(chunk_width), chunk_width):
+        for i in range(-1280, (screen_width+(chunk_width))*2, chunk_width):
             staticObjects.append(str(i) + "," + str(prev_y)) #getting a list of all the chunks to be made along the bottom of the screen
             f.write(str(i) + "," + str(prev_y) + ";")
             staticObjects[i//chunk_width] = createObject.newStatic((124,124,124), chunk_width, 720-prev_y, i, prev_y, screen)
