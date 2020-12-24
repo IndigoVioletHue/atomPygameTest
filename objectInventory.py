@@ -15,58 +15,19 @@ def createAllMoveable(screen):
     return moveableObjects
 
 def createAllStatic(screen):
-    staticObjects = []
     chunk_width = 10
     screen_width = screen.get_width()
     prev_y = 650 #actually starting y in this context but needs a starting value
-    #(color, width, height, x, y, screen)
-    with open('chunks.txt', 'w+') as f:
-        for i in range(-1280, (screen_width+(chunk_width))*2, chunk_width):
-            staticObjects.append(str(i) + "," + str(prev_y)) #getting a list of all the chunks to be made along the bottom of the screen
-            f.write(str(i) + "," + str(prev_y) + ";")
-            staticObjects[i//chunk_width] = createObject.newStatic((124,124,124), chunk_width, 720-prev_y, i, prev_y, screen)
-            staticObjects[i//chunk_width].isGround()
+    staticObjects = {}
+    for i in range(6):
+        chunkToGen = 'C_'+str(i) #chunk _ (number)
+        staticObjects[chunkToGen] = [] #dictionary of all the rect values in the chunks
+        start_x = -960+(320*i) 
+        for j in range(0, 320, 10):
+            #color, width, height, x, y, screen
+            staticObjects[chunkToGen].append((124,124,124), chunk_width, 720-prev_y, start_x + j, prev_y, screen)
             prev_y = random.randint(prev_y-3,prev_y+3)
             if prev_y >= 720: prev_y = 710
-    f.close()
-#
-#    with open('chunk_data/chunk1.txt', 'w+') as f:
-#        prev_y = random.randint(prev_y-1,prev_y+1)
-#        for i in range(0, screen_width+(chunk_width*2), chunk_width):
-#            f.write("(" + str(i) + "," + str(prev_y) + ");")
-#            prev_y = random.randint(prev_y-1,prev_y+1)
-#            if prev_y >= 720: prev_y = 710
-#    f.close()
-
-#    with open('chunk_data/chunk-1.txt', 'w+') as f:
-#        x = open('chunk_data/chunk0.txt','r')
-#        x = x.read()
-#        x = x.split(";")
-#        y = x[0]
-#        y.split(",")
-#        prev_y = int(y[1])
-
-#        for i in range(screen_width+(chunk_width*2), 0 , -(chunk_width)):
-#            f.write("(" + str(i) + "," + str(prev_y) + ");")
-#            prev_y = random.randint(int(prev_y)-1,int(prev_y)+1)
-#            if prev_y >= 720: prev_y = 710
-#    f.close()
-
-#    platform = createObject.newStatic((124,124,124), 300, 50, 50, 480, screen) #platform
-#    staticObjects.append(platform)
-
-#    platform2 = createObject.newStatic((124,124,124), 300, 50, 250, 280, screen) #another platform2
-#    staticObjects.append(platform2)
-
-#    platform3 = createObject.newStatic((124,124,124), 300, 50, 450, 80, screen) #another platform2
-#    staticObjects.append(platform3)
-
-#    platform4 = createObject.newStatic((124,124,124), 300, 50, 450, -80, screen) #another platform2
-#    staticObjects.append(platform4)
-
-#    text1 = createObject.newText("5000", 36, (124,124,124))
-
-
     return staticObjects
 
 

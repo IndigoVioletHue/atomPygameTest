@@ -23,11 +23,12 @@ pygame.init() #intialising pygame
 pygame.display.init()
 pygame.display.update()
 #pygame.display.toggle_fullscreen()
-
+game_x = 0
+game_y = 0
 
 background = pygame.Surface((1280, 720))
 
-def gametick(threadName, counter): #needs to tick x times per second
+def Render(threadName, counter): #needs to tick x times per second
     while running:
         screen.fill((255,255,255))
         background.fill((255,255,255))
@@ -52,17 +53,17 @@ class thread (threading.Thread):
         print("Starting " + self.name)
         # Get lock to synchronize threads
         threadLock.acquire()
-        gametick(self.name, 15) #max 25tps.
+        Render(self.name, 15) #max 25tps.
         # Free lock to release next thread
         threadLock.release()
 
 
 #Loop
 running = True
-gameTick = thread(1, "gametick")
+gameTick = thread(1, "Render")
 gameTick.start()
 #pygame.display.flip()
-while running: #main gameloop. Kinda stolen?
+while running:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN: #keydown event handling
             if event.key == pygame.K_w:

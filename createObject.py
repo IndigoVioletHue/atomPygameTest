@@ -15,9 +15,6 @@ class newText(pygame.font.Font):
         content = pygame.font.Font(None, size)
         self = content.render(text, 1, color)
     
-class newChunk(pygame.sprite.Sprite):
-    def __init__(self, width):
-        pygame.sprite.Sprite.__init__(self)
 
 
 class newStatic(pygame.sprite.Sprite):
