@@ -33,7 +33,9 @@ def Render(threadName, counter): #needs to tick x times per second
         screen.fill((255,255,255))
         background.fill((255,255,255))
         player.render(background)
-        for i in range(len(staticObjects)):
+        chunk = 'C_' + game_x -960 //320
+        endchunk = 'C_'+ game_x +960 //320
+        for i in range(len(staticObjects[chunk]), len(staticObjects[endchunk])):
             staticObjects[i].render(background)
             background.blit(staticObjects[i].image, (staticObjects[i].rect.x, staticObjects[i].rect.y))
         background.blit(player.image, (player.rect.x, player.rect.y))
