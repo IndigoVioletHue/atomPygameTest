@@ -1,5 +1,7 @@
 
 import createObject, random
+global chunk_width
+chunk_width = 1
 moveableObjects = None
 staticObjects = None
 BLACK = (0,0,0)
@@ -15,19 +17,19 @@ def createAllMoveable(screen):
     return moveableObjects
 
 def createAllStatic(screen):
-    chunk_width = 10
     screen_width = screen.get_width()
     prev_y = 650 #actually starting y in this context but needs a starting value
     staticObjects = {}
-    for i in range(6):
-        chunkToGen = 'C_'+str(i) #chunk _ (number)
+    for i in range(-3, 3, 1):
+        chunkToGen = i #chunk _ (number)
         staticObjects[chunkToGen] = [] #dictionary of all the rect values in the chunks
         start_x = -960+(320*i) 
-        for j in range(0, 320, 10):
+        for j in range(0, 320, chunk_width):
             #color, width, height, x, y, screen
-            staticObjects[chunkToGen].append((124,124,124), chunk_width, 720-prev_y, start_x + j, prev_y, screen)
+            staticObjects[chunkToGen].append(((124,124,124), chunk_width, 720-prev_y, start_x + j, prev_y, screen))
             prev_y = random.randint(prev_y-3,prev_y+3)
             if prev_y >= 720: prev_y = 710
+
     return staticObjects
 
 
