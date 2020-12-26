@@ -14,7 +14,10 @@ screen.fill((255,255,255))#Fills white to screen
 clock = pygame.time.Clock()
 FPS = 60 #60FPS 4K Realtime RayTracing B)))))))))))))))
 
-objects = objectInventory.init(screen)
+
+background = pygame.Surface((1280, 720))
+
+objects = objectInventory.init(background)
 staticObjects = objects.getStatic()
 moveableObjects = objects.getMoveable()
 player = moveableObjects[0] #this'll do for now, only one moveable and the player will be drawn before the rest anyway.
@@ -28,7 +31,6 @@ game_y = 0
 chunkCache = []
 renderCache = []
 
-background = pygame.Surface((1280, 720))
 
 chunk_width = objectInventory.chunk_width
 
@@ -54,13 +56,13 @@ def Render(threadName, counter): #needs to tick x times per second
         print(staticObjects[-2][3])
         for j in range(128):
             for i in range(-2,2,1):
-                renderCache[j] = createObject.newStatic(staticObjects[i][j][0],     #The i is the chunk that is being rendered, the j is the rect value in the
+                tempPlatform = createObject.newStatic(staticObjects[i][j][0],     #The i is the chunk that is being rendered, the j is the rect value in the
                                                         staticObjects[i][j][1],     #chunk, and the number is the position of the value in the tuple
                                                         staticObjects[i][j][2],
                                                         staticObjects[i][j][3],
                                                         staticObjects[i][j][4],
                                                         staticObjects[i][j][5])
-                print(type(renderCache[j]))
+                renderCache[j] = tempPlatform
         for i in range(-31, 31, 1):
             for j in range(128): #its technically meant to be 1280 // chunk_width (which at the time now is 10) but oh well.
                 try:
