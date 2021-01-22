@@ -1,4 +1,4 @@
-
+#this is the branch to test all the hyper-complicated chunk stuff i wanna do, main branch has been rolled back to the old entity loading
 import createObject, random
 global chunk_width
 chunk_width = 1

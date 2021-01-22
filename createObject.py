@@ -1,3 +1,4 @@
+#this is the branch to test all the hyper-complicated chunk stuff i wanna do, main branch has been rolled back to the old entity loading
 #object creation file. Planned to be consisting of four types.
 #Static, moveable, interactable, and mountable(?)
 #I could probably cram these all into one object, but it helps debugging, at the expense

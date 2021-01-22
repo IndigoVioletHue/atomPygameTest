@@ -1,3 +1,5 @@
+#this is the branch to test all the hyper-complicated chunk stuff i wanna do, main branch has been rolled back to the old entity loading
+
 #Main file, so just drawing the stages and intialising all the objects that'll be used.
 #I can see a lot of rewriting potential in this code. Swag B)
 
