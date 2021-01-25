@@ -90,6 +90,7 @@ class newStatic(pygame.sprite.Sprite):
         self.game_x -= self.lorr
 
         if self.isground and (self.rect.x > 1280):
+            pass
             self.game_x -= self.rect.x
             self.rect.x = 0
             self.game_x = int(self.game_x)
@@ -99,14 +100,10 @@ class newStatic(pygame.sprite.Sprite):
             full_coords = []
             for i in range(len(coords)):
                 x = coords[i].split(",")
-#                print(x)
                 full_coords.append(x[0]);full_coords.append(x[len(x)-1])
 
-#            print(full_coords)
-
-#            if str(self.game_x) in full_coords:
-#            print(coords)#str(roundup(self.game_x)) is str(full_coords[len(full_coords)-2][0]), roundup(self.game_x), full_coords[len(full_coords)-2][0])#.index(roundup(self.game_x))-1)
-#            sys.exit()
+        self.rect.height = self.height
+        self.rect.width = self.width
 
         if self.isground and (self.rect.x < 0):
             self.rect.x = 1280-self.width
@@ -191,8 +188,10 @@ class newMoveable(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
         self.gameX += self.velX + -(staticObjects[0].lorr)
         self.gameY += self.velY + -(staticObjects[0].uord)
+        self.rect.height = self.height
+        self.rect.width = self.width
 
-        for i in range(len(staticObjects)): #collision detection
+        for i in range(-1280, 2560, 1) : #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.rect.height:
                 self.Jump = True
             elif self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.Jump:

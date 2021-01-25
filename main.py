@@ -28,16 +28,11 @@ pygame.display.update()
 #pygame.display.toggle_fullscreen()
 game_x = 0
 game_y = 0
-chunkCache = []
-renderCache = []
 
 
 chunk_width = objectInventory.chunk_width
 
-for i in range(1920):
-    chunkCache.append('')
-for i in range(128):
-    renderCache.append('')
+
 
 
 def Render(threadName, counter): #needs to tick x times per second
@@ -45,37 +40,9 @@ def Render(threadName, counter): #needs to tick x times per second
         screen.fill((255,255,255))
         background.fill((255,255,255))
         player.render(background)
-        if game_x % 320 == 0: #if the centre is a multiple of 320
-            for i in range(6): #load 6 chunks
-                chunkRender = staticObjects[(game_x -960+(320*i))//320] #this finds the chunk that needs to be loaded. This neat little equation is
-                                                                        #incredibly useful.
-                for j in range(320//chunk_width):                       #This is just loading every rect in the chunk
-                    print(len(chunkRender))
-                    for x in range(6):
-                        chunkCache[(32*i)+j] = chunkRender[j][x]        #This is setting the chunkCache to render, The x is to access the values in the tuple 
-        print(staticObjects[-2][3])
-        for j in range(128):
-            for i in range(-2,2,1):
-                tempPlatform = createObject.newStatic(staticObjects[i][j][0],     #The i is the chunk that is being rendered, the j is the rect value in the
-                                                        staticObjects[i][j][1],     #chunk, and the number is the position of the value in the tuple
-                                                        staticObjects[i][j][2],
-                                                        staticObjects[i][j][3],
-                                                        staticObjects[i][j][4],
-                                                        staticObjects[i][j][5])
-                renderCache[j] = tempPlatform
-        for i in range(-31, 31, 1):
-            for j in range(128): #its technically meant to be 1280 // chunk_width (which at the time now is 10) but oh well.
-                try:
-                    if staticObjects[i][j][3] < game_x - 640:
-                        renderCache[i].rect.x = 0
-                    elif staticObjects[i][j][3] > game_x + 640:
-                        renderCache[4-i].rect.x = 1280
-                except KeyError:
-                    pass
-
-        for i in range(128):
-            renderCache[i].render(background)
-            background.blit(renderCache[i].image, (renderCache[i].rect.x, renderCache[i].rect.y))
+        for i in range(screen.get_width()):
+            staticObjects[i].render(screen)
+            background.blit(staticObjects[i].image, (staticObjects[i].rect.x, staticObjects[i].rect.y))
         background.blit(player.image, (player.rect.x, player.rect.y))
         screen.blit(background,(0,0))
     
@@ -148,7 +115,7 @@ while running:
             pygame.quit()
             sys.exit()
 
-    for i in range(len(staticObjects)): #static objects tick
+    for i in range(-screen.get_width(), screen.get_width()*2, chunk_width): #static objects tick
         staticObjects[i].tick(screen)
         if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is on the right side of the screen and trying to move across
             staticObjects[i].setX(-5)
@@ -162,10 +129,7 @@ while running:
             staticObjects[i].setY(5)
         elif player.rect.y > 0 or player.rect.y <= 720-player.rect.height-1: #if the x value is smaller than 100 and the key ISNT up.
             staticObjects[i].setY(0)
-        print(staticObjects[i].rect)
-        if player.rect.colliderect(staticObjects[i].rect) == True: print(player.rect.colliderect(staticObjects[i].rect))
 
     player.tick(staticObjects)
     clock.tick(60)
-    print(game_x)
 #    print(round(player.gameX, 0), player.gameY, staticObjects[0].game_x)
