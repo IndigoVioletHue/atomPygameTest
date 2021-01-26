@@ -18,16 +18,16 @@ def createAllMoveable(screen):
 
 def createAllStatic(screen):
     screen_width = screen.get_width()
-    chunk_width = 1
+    chunk_width = 10
     prev_y = 650 #actually starting y in this context but needs a starting value
-    diff = 1
+    diff = 5
     staticObjects = {}
     with open('chunks.txt', 'w+') as f:
-        for j in range(-1280, screen_width*2, chunk_width):
+        for j in range(0, screen_width, chunk_width):
             f.write(str(j) + "," + str(prev_y) + ";")
             #color, width, height, x, y, screen
-            temp = createObject.newStatic((124,124,124), chunk_width, 720-prev_y, j, prev_y, screen)
-            staticObjects.update({j: temp} )
+            temp = createObject.newStatic((random.randint(1,255),random.randint(1,255),random.randint(1,255)), chunk_width, 720-prev_y, j, prev_y, screen)
+            staticObjects.update({j//10: temp} )
             prev_y = random.randint(prev_y-diff, prev_y+diff)
             if prev_y > 710: prev_y = 710
 

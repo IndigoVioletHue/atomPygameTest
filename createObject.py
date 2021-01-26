@@ -79,10 +79,8 @@ class newStatic(pygame.sprite.Sprite):
         self.uord = y
 
     def render(self, screen):
-#        if (self.rect.x >= 1280 or self.rect.x <= self.width - (self.width*2)) or (self.rect.y <= 0+self.height or self.rect.y > 720): #if the object is off screen, stop rendering
-#            pass
-
-        self.rect = pygame.draw.rect(screen, self.color, (self.rect.x,self.rect.y,self.width,self.height))#drawing the new rect
+        self.rect = pygame.draw.rect(screen, self.color, self.rect)#drawing the new rect
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
     def tick(self, screen):
         self.screen = screen
@@ -186,12 +184,11 @@ class newMoveable(pygame.sprite.Sprite):
 
     def tick(self, staticObjects): #i need the list of all of the land objects for the collision detection mechanism.
         self.rect = self.rect.move(self.velX,self.velY)#assigning the new rect pos to self.rect
-        self.gameX += self.velX + -(staticObjects[0].lorr)
-        self.gameY += self.velY + -(staticObjects[0].uord)
+        self.gameX, self.gameY += self.velX + -(staticObjects[0].lorr), self.velY + -(staticObjects[0].uord)
         self.rect.height = self.height
         self.rect.width = self.width
 
-        for i in range(-1280, 2560, 1) : #collision detection
+        for i in range(128) : #collision detection
             if not self.rect.colliderect(staticObjects[i]) and not self.rect.y == staticObjects[i].rect.y - self.rect.height:
                 self.Jump = True
             elif self.rect.colliderect(staticObjects[i]) and self.velY >=0 and self.Jump:

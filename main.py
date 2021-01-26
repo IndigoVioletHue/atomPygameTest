@@ -28,7 +28,11 @@ pygame.display.update()
 #pygame.display.toggle_fullscreen()
 game_x = 0
 game_y = 0
+onScr = []
 
+for i in range(128):
+    temp = staticObjects[i]
+    onScr.append((temp.image, (temp.rect.x, temp.rect.y)))
 
 chunk_width = objectInventory.chunk_width
 
@@ -40,7 +44,7 @@ def Render(threadName, counter): #needs to tick x times per second
         screen.fill((255,255,255))
         background.fill((255,255,255))
         player.render(background)
-        for i in range(screen.get_width()):
+        for i in range(128):
             staticObjects[i].render(screen)
             background.blit(staticObjects[i].image, (staticObjects[i].rect.x, staticObjects[i].rect.y))
         background.blit(player.image, (player.rect.x, player.rect.y))
@@ -115,7 +119,7 @@ while running:
             pygame.quit()
             sys.exit()
 
-    for i in range(-screen.get_width(), screen.get_width()*2, chunk_width): #static objects tick
+    for i in range(screen.get_width()//10): #static objects tick
         staticObjects[i].tick(screen)
         if player.rect.x >= 1180-50 and player.rkupx == False: #if the player x is on the right side of the screen and trying to move across
             staticObjects[i].setX(-5)
