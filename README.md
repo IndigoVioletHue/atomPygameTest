@@ -1,5 +1,5 @@
 # atomPygameTest
-Testing Pygame using the Atom IDE, because i can.
+Testing Pygame, because i can.
 
 Mainly just going to be creating a terrible excuse for a 2D game engine using pygame. Not for anything other than personal enjoyment, definately not planning any kind of game release. Far too stressful.
 
